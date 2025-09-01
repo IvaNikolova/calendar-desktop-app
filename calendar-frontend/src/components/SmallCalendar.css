@@ -1,0 +1,61 @@
+/* Remove double arrows (year navigation already disabled via props) */
+.react-calendar__navigation button {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Month title centered */
+.react-calendar__navigation__label {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Hide borders for cleaner look */
+.react-calendar {
+  border: none;
+  width: 100%;
+}
+
+/* Weekdays */
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #6b7280; /* gray-500 */
+  margin-bottom: 4px;
+}
+.react-calendar__month-view__weekdays abbr {
+  text-decoration: none !important;
+}
+
+/* Dates */
+.react-calendar__tile {
+  max-width: initial !important;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  border-radius: 50%;
+}
+
+/* Highlight today */
+.react-calendar__tile--now {
+  background: #e6f7e6 !important;
+  border-radius: 50%;
+}
+
+/* Selected day */
+.react-calendar__tile--active {
+  background: #4caf50 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+/* Hover */
+.react-calendar__tile:hover {
+  background: #f0f0f0;
+  border-radius: 50%;
+}

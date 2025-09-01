@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import "./SmallCalendar.css";
 
 function Sidebar() {
   // Value can be Date, Date[], or null, but here we’ll just allow Date | null
@@ -10,7 +11,11 @@ function Sidebar() {
     <aside className="w-64 bg-gray-100 p-4 flex flex-col gap-4">
       {/* Small Calendar */}
       <div className="bg-white shadow rounded p-2">
-        <Calendar value={date} onChange={(value) => setDate(value as Date)} />
+        <Calendar 
+            value={date} 
+            onChange={(value) => setDate(value as Date)}  
+            prev2Label={null}  
+            next2Label={null}/>
       </div>
 
       {/* TODO list */}

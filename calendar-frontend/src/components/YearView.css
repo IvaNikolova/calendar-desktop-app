@@ -1,0 +1,62 @@
+/* Year View wrapper */
+.fc-multimonth {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(3, auto);   /* 3 rows */
+  gap: 8px; /* small gap between months */
+  padding: 8px;
+  height: auto !important; /* remove fixed height */
+}
+
+/* Each month box */
+.fc-multimonth-month {
+  border: 1px solid #e5e7eb; /* subtle border */
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  margin: 0 !important;
+  padding: 4px !important;
+  min-width: auto !important;
+}
+
+/* Month title */
+.fc-multimonth-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+/* Table (days grid) */
+.fc-multimonth-month table {
+  font-size: 0.7rem;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.fc-multimonth-month th {
+  font-weight: 500;
+  color: #6b7280; /* gray-500 */
+  padding: 2px;
+  text-align: center;
+}
+
+.fc-multimonth-month td {
+  text-align: center;
+  padding: 2px;
+  line-height: 1.4;
+  min-width: 20px;
+  height: 20px;
+}
+
+/* Shrink header toolbar (Day/Week/Month/Year buttons) */
+.fc-header-toolbar {
+  margin: 4px 0 !important;
+  padding: 0 8px;
+}
+
+/* Shrink year label */
+.fc-toolbar-title {
+  font-size: 1.1rem !important;
+  font-weight: 600;
+}

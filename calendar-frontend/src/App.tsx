@@ -1,22 +1,23 @@
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-import CalendarView from "./components/CalendarView"
-import './App.css'
+import { useState } from "react";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import CalendarView from "./components/CalendarView";
+import "./App.css";
 
 function App() {
+  // state to track current calendar view
+  const [calendarView, setCalendarView] = useState("dayGridMonth");
+
   return (
     <div className="w-screen h-screen flex flex-col">
-      {/* Header */}
-      <Header />
+      {/* Header with two rows */}
+      <Header calendarView={calendarView} setCalendarView={setCalendarView} />
 
-      {/* Body layout: sidebar + main */}
+      {/* Body layout with sidebar and calendar */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
         <Sidebar />
-
-        {/* Main content */}
         <main className="flex-1 p-4 overflow-auto">
-          <CalendarView />
+          <CalendarView view={calendarView} />
         </main>
       </div>
     </div>
@@ -24,4 +25,3 @@ function App() {
 }
 
 export default App;
-

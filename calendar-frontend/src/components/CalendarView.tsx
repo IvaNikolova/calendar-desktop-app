@@ -1,28 +1,54 @@
+import { useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
-import type { CalendarOptions } from "@fullcalendar/core";
+import type { CalendarApi } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+import multiMonthPlugin from "@fullcalendar/multimonth"; 
+import "./YearView.css";
 
-interface CalendarViewProps {
+
+type CalendarViewProps = {
   view: string;
-}
+};
 
 function CalendarView({ view }: CalendarViewProps) {
-  const options: CalendarOptions = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: view,
-    headerToolbar: false,
-    height: "100%",
-    events: [
-      { title: "Meeting", date: "2025-08-27" },
-      { title: "Shopping", date: "2025-08-28" },
-    ],
-  };
+  const calendarRef = useRef<FullCalendar | null>(null);
+
+  useEffect(() => {
+    const api: CalendarApi | null = calendarRef.current
+      ? calendarRef.current.getApi()
+      : null;
+    if (api) {
+      api.changeView(view);
+    }
+  }, [view]);
 
   return (
-    <div className="h-full bg-white shadow rounded p-4">
-      <FullCalendar {...options} />
+    <div className="bg-white shadow rounded p-4 h-full">
+      <FullCalendar
+        ref={calendarRef}
+        plugins={[
+          dayGridPlugin,
+          timeGridPlugin,
+          interactionPlugin,
+          listPlugin,
+          multiMonthPlugin, 
+        ]}
+        initialView="dayGridMonth"
+        height="100%"
+        events={[
+          { title: "Meeting", date: "2025-09-03" },
+          { title: "Shopping", date: "2025-09-05" },
+        ]}
+        views={{
+          multiMonthYear: {
+            type: "multiMonth",
+            duration: { years: 1 }, 
+          },
+        }}
+      />
     </div>
   );
 }
