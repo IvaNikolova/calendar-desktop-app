@@ -25,7 +25,6 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
     if (!api) return;
 
     if (view === "timeGridDay") {
-      // 👉 Apply clickedDate only for Day view
       if (clickedDate && !resetView) {
         api.changeView("timeGridDay", clickedDate);
       } else {
@@ -33,7 +32,6 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
         setClickedDate(null);
       }
     } else if (view === "dayGridMonth") {
-      // 👉 Apply clickedMonth only for Month view
       if (clickedMonth && !resetView) {
         api.changeView("dayGridMonth", clickedMonth);
       } else {
@@ -41,7 +39,6 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
         setClickedMonth(null);
       }
     } else {
-      // 👉 Week + Year always reset to today
       api.changeView(view, new Date());
       if (view !== "timeGridDay") setClickedDate(null);
       if (view !== "dayGridMonth") setClickedMonth(null);
@@ -51,7 +48,7 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
   }, [view, resetView, clickedDate, clickedMonth, onViewChange]);
 
   return (
-    <div className="bg-white shadow rounded p-4 h-full">
+    <div className="bg-white border border-gray-200 shadow rounded  h-full">
       <FullCalendar
         ref={calendarRef}
         plugins={[
@@ -63,10 +60,11 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
         ]}
         initialView="dayGridMonth"
         height="100%"
-        events={[
-          { title: "Meeting", date: "2025-09-03" },
-          { title: "Shopping", date: "2025-09-05" },
-        ]}
+        headerToolbar={{
+          left: "title",
+          center: "", 
+          right: "prev,next"
+        }}
         views={{
           multiMonthYear: {
             type: "multiMonth",
@@ -77,7 +75,6 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
           const api = calendarRef.current?.getApi();
           if (!api) return;
 
-          // 👉 From Month, Week, Year → open clicked day in Day view
           if (
             api.view.type === "dayGridMonth" ||
             api.view.type === "timeGridWeek" ||
@@ -89,7 +86,6 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
           }
         }}
         dayCellDidMount={(arg) => {
-          // 👉 Make month labels in Year view clickable
           if (arg.view.type === "multiMonthYear" && arg.date.getDate() === 1) {
             arg.el.style.cursor = "pointer";
             arg.el.style.fontWeight = "bold";
@@ -101,8 +97,8 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
             arg.el.addEventListener("click", () => {
               const api = calendarRef.current?.getApi();
               if (api) {
-                setClickedMonth(arg.date); // 👉 Save clicked month
-                api.changeView("dayGridMonth", arg.date); // open that month
+                setClickedMonth(arg.date);
+                api.changeView("dayGridMonth", arg.date);
                 onViewChange("dayGridMonth");
               }
             });

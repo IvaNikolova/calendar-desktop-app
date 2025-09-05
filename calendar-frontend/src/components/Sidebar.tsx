@@ -8,9 +8,9 @@ function Sidebar() {
   const [date, setDate] = useState<Date | null>(new Date());
 
   return (
-    <aside className="w-64 bg-gray-100 p-4 flex flex-col gap-4">
+    <aside className="w-64 bg-white p-2 flex flex-col gap-4">
       {/* Small Calendar */}
-      <div className="bg-white shadow rounded p-2">
+      <div className="bg-white border border-gray-300 shadow rounded p-2">
         <Calendar 
             value={date} 
             onChange={(value) => setDate(value as Date)}  
@@ -19,7 +19,7 @@ function Sidebar() {
       </div>
 
       {/* TODO list */}
-      <div className="flex-1 bg-white shadow rounded p-4">
+      <div className="flex-1 bg-white border border-gray-030 shadow rounded p-4">
         <h2 className="font-bold mb-2">TODO LIST</h2>
         <ul className="list-disc pl-4">
           <li>Eggs</li>

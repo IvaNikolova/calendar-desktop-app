@@ -5,29 +5,30 @@ type HeaderProps = {
 
 function Header({ currentView, onChangeView }: HeaderProps) {
   const buttonClasses = (view: string) =>
-    `px-4 py-1 rounded transition-colors ${
-      currentView === view
-        ? "bg-green-500 text-white"
-        : "bg-gray-200 hover:bg-gray-300"
+    `px-4 py-1 rounded transition-colors border border-gray-300 shadow  ${
+      currentView === view ? "bg-green-600 text-white " : ""
     }`;
 
   return (
-    <header className="bg-white shadow p-4 flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-2">📅 Calendar</h1>
+    <header className="bg-white shadow p-2 flex flex-col">
+      <h1 className="relative text-4xl mb-2 flex items-center justify-center gap-2 border-b-2 border-gray-300 pb-2 after:absolute after:left-0 after:right-0 after:bottom-0 after:h-1 after:shadow-md after:rounded-sm">
+        <img src="/src/images/logo.png" alt="Logo" className="h-10 w-10" />
+        Calendar
+      </h1>
 
       {/* Main button row */}
-      <div className="relative w-full flex items-center">
+      <div className="flex items-center w-full mt-2">
         {/* Settings button on the left */}
-        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300">
-          <span className="">
+        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-300 shadow hover:bg-gray-50">
+          <span className="flex justify-between">
             <span>•</span>
             <span>•</span>
             <span>•</span>
           </span>
         </button>
 
-        {/* Centered view buttons */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-2">
+        {/* View buttons + + button on the right */}
+        <div className="ml-auto flex items-center gap-1">
           <button
             className={buttonClasses("timeGridDay")}
             onClick={() => onChangeView("timeGridDay")}
@@ -52,15 +53,13 @@ function Header({ currentView, onChangeView }: HeaderProps) {
           >
             Year
           </button>
-        </div>
 
-        {/* + button on the right */}
-        <div className="ml-auto">
-          <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300">
-            <span className="flex gap-1 text-black font-bold text-lg">
-              <span>+</span>
-            </span>
-          </button>
+          {/* + button */}
+          <div className="ml-10">
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-300 shadow hover:bg-gray-50">
+              <span className="flex gap-1 text-black font-bold text-lg">+</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>
