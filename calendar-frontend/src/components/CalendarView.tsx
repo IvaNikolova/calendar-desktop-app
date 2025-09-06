@@ -55,30 +55,7 @@ export default function CalendarView({
   }, [view, resetView, clickedDate, clickedMonth]);
 
   // Helper: parse "October 2025" -> Date(2025, 9, 1)
-  const parseMonthLabel = (label: string): Date | null => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const parts = label.trim().split(/\s+/);
-    if (parts.length < 2) return null;
-    const monthName = parts[0];
-    const yearStr = parts[1];
-    const monthIndex = months.indexOf(monthName);
-    const year = parseInt(yearStr, 10);
-    if (monthIndex >= 0 && !isNaN(year)) return new Date(year, monthIndex, 1);
-    return null;
-  };
+  
 
   // Bind handlers + styling to month title elements inside the multimonth view container
   const bindMonthTitleButtons = () => {
