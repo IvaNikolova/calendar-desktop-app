@@ -14,12 +14,18 @@ type CalendarViewProps = {
   resetView?: boolean;
 };
 
-function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
+export default function CalendarView({
+  view,
+  onViewChange,
+  resetView,
+}: CalendarViewProps) {
   const calendarRef = useRef<FullCalendar | null>(null);
 
   const [clickedDate, setClickedDate] = useState<Date | null>(null);
   const [clickedMonth, setClickedMonth] = useState<Date | null>(null);
+  const observerRef = useRef<MutationObserver | null>(null);
 
+  // sync view -> calendar. clickedDate only applies to Day view, clickedMonth only to Month view
   useEffect(() => {
     const api: CalendarApi | null = calendarRef.current?.getApi() ?? null;
     if (!api) return;
@@ -45,10 +51,134 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
     }
 
     onViewChange(view);
-  }, [view, resetView, clickedDate, clickedMonth, onViewChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, resetView, clickedDate, clickedMonth]);
+
+  // Helper: parse "October 2025" -> Date(2025, 9, 1)
+  const parseMonthLabel = (label: string): Date | null => {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const parts = label.trim().split(/\s+/);
+    if (parts.length < 2) return null;
+    const monthName = parts[0];
+    const yearStr = parts[1];
+    const monthIndex = months.indexOf(monthName);
+    const year = parseInt(yearStr, 10);
+    if (monthIndex >= 0 && !isNaN(year)) return new Date(year, monthIndex, 1);
+    return null;
+  };
+
+  // Bind handlers + styling to month title elements inside the multimonth view container
+  const bindMonthTitleButtons = () => {
+    const monthEls = document.querySelectorAll<HTMLElement>(
+      ".fc-multimonth-month .fc-multimonth-title"
+    );
+
+    monthEls.forEach((el) => {
+      const parent = el.closest(".fc-multimonth-month") as HTMLElement | null;
+      if (!parent) return;
+
+      // FullCalendar gives parent like data-date="2025-10"
+      const dataDate = parent.getAttribute("data-date"); // e.g. "2025-10"
+      if (!dataDate) return;
+
+      const [yearStr, monthStr] = dataDate.split("-");
+      const year = parseInt(yearStr, 10);
+      const monthIndex = parseInt(monthStr, 10) - 1; // zero-based
+
+      const date = new Date(year, monthIndex, 1);
+
+      // make label look clickable
+      el.style.cursor = "pointer";
+      el.style.padding = "2px 6px";
+      el.style.borderRadius = "6px";
+      el.style.fontWeight = "600";
+      el.style.color = "#064e3b";
+      el.style.background =
+        clickedMonth && clickedMonth.getTime() === date.getTime()
+          ? "#bbf7d0"
+          : "#f0fdf4";
+
+      // prevent duplicate bindings
+      if (el.dataset.bindMonth === "1") return;
+      el.dataset.bindMonth = "1";
+
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setClickedMonth(date);
+
+        const api = calendarRef.current?.getApi();
+        api?.changeView("dayGridMonth", date);
+        onViewChange("dayGridMonth");
+      });
+    });
+  };
+
+  // Attach a MutationObserver so when FullCalendar re-renders the multimonth DOM (e.g. next/prev year),
+  // we re-bind the buttons and re-style them.
+  useEffect(() => {
+    // cleanup previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = null;
+    }
+
+    // only observe when year view is visible
+    if (view !== "multiMonthYear") {
+      // But still ensure titles styled if sidebar etc. changed
+      // (no observer)
+      bindMonthTitleButtons();
+      return;
+    }
+
+    // Wait a tick so DOM exists (FullCalendar renders async)
+    const tryBind = () => {
+      bindMonthTitleButtons();
+    };
+
+    // initial bind (may need a short delay)
+    setTimeout(tryBind, 0);
+
+    // observe the container for changes (re-bind on DOM changes)
+    const root = document.querySelector(".fc-multimonth") ?? document.querySelector(".fc");
+    if (!root) return;
+
+    const observer = new MutationObserver(() => {
+      // re-bind and re-style when structure changes
+      bindMonthTitleButtons();
+    });
+    observer.observe(root, { childList: true, subtree: true });
+    observerRef.current = observer;
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, clickedMonth]);
+
+  // Re-apply styling when clickedMonth changes (so highlight updates without DOM recreation)
+  useEffect(() => {
+    bindMonthTitleButtons();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clickedMonth]);
 
   return (
-    <div className="bg-white border border-gray-200 shadow rounded  h-full">
+    <div className="bg-white border border-gray-200 shadow rounded h-full">
       <FullCalendar
         ref={calendarRef}
         plugins={[
@@ -62,8 +192,8 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
         height="100%"
         headerToolbar={{
           left: "title",
-          center: "", 
-          right: "prev,next"
+          center: "",
+          right: "prev,next",
         }}
         views={{
           multiMonthYear: {
@@ -85,31 +215,19 @@ function CalendarView({ view, onViewChange, resetView }: CalendarViewProps) {
             onViewChange("timeGridDay");
           }
         }}
-        dayCellDidMount={(arg) => {
-          if (arg.view.type === "multiMonthYear" && arg.date.getDate() === 1) {
-            arg.el.style.cursor = "pointer";
-            arg.el.style.fontWeight = "bold";
-            arg.el.style.color = "#166534";
-            arg.el.style.backgroundColor = "#f0fdf4";
-            arg.el.style.borderRadius = "6px";
-            arg.el.style.padding = "2px 4px";
-
-            arg.el.addEventListener("click", () => {
-              const api = calendarRef.current?.getApi();
-              if (api) {
-                setClickedMonth(arg.date);
-                api.changeView("dayGridMonth", arg.date);
-                onViewChange("dayGridMonth");
-              }
-            });
-          }
-        }}
         viewDidMount={(arg) => {
+          // keep header in sync
           onViewChange(arg.view.type);
+          // initial bind on mount
+          setTimeout(() => bindMonthTitleButtons(), 0);
+        }}
+        datesSet={(arg) => {
+          // when date range changes (e.g. next/prev year), re-bind
+          if (arg.view.type === "multiMonthYear") {
+            setTimeout(() => bindMonthTitleButtons(), 0);
+          }
         }}
       />
     </div>
   );
 }
-
-export default CalendarView;

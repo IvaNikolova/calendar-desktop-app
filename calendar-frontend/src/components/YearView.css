@@ -3,117 +3,71 @@
   display: grid !important;
   grid-template-columns: repeat(4, 1fr); /* 4 columns */
   grid-template-rows: repeat(3, auto);   /* 3 rows */
-  gap: 8px; /* small gap between months */
-  padding: 8px;
-  height: auto !important; /* remove fixed height */
+  gap: 8px; /* smaller gap */
+  padding: none;
+  height: auto !important;
+
 }
 
 /* Each month box */
 .fc-multimonth-month {
-  border: 1px solid #e5e7eb; /* subtle border */
-  border-radius: 8px;
+  border: 0.5px solid #e5e7eb;
   background: white;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   margin: 0 !important;
-  padding: 0px !important;
+  padding: 2px !important;  /* tighter padding */
   min-width: auto !important;
+}
+
+.fc .fc-multimonth {
+  border: none;
 }
 
 /* Month title */
 .fc-multimonth-title {
-  font-size: 0.9rem;
+  font-size: 0.75rem;         /* smaller font */
   font-weight: 600;
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  background: white !important;
+  padding: 2px 0;
 }
+
 
 /* Table (days grid) */
 .fc-multimonth-month table {
-  font-size: 0.7rem;
+  font-size: 0.55rem;         /* smaller font */
   border-collapse: collapse;
   width: 100%;
+  table-layout: fixed;      /* force equal cell sizes */
 }
 
+/* Day headers */
 .fc-multimonth-month th {
   font-weight: 500;
-  color: #6b7280; /* gray-500 */
-  padding: 2px;
+  color: #6b7280;
+  padding: 0;              /* reduced */
   text-align: center;
+  font-size: 0.7rem;        /* very small weekday names */
+  line-height: 1.2;
 }
 
+/* Day cells */
 .fc-multimonth-month td {
   text-align: center;
-  padding: 2px;
-  line-height: 1.4;
-  min-width: 20px;
-  height: 20px;
+  padding: 0 !important;              /* less padding */
+  min-width: 12px;           /* narrower */
+  height: 10px;              /* shorter */
+  font-size: 0.7rem;        /* smaller numbers */
+  overflow: hidden;
+  line-height: 1.2;
 }
 
-/* Shrink header toolbar (Day/Week/Month/Year buttons) */
-.fc-header-toolbar {
-  margin: 4px 0 !important;
-  padding: 0 8px;
-}
-
-/* Shrink year label */
-.fc-toolbar-title {
-  font-size: 1.1rem !important;
-  font-weight: 600;
-}
-
-/* Days clickable */
-.fc-daygrid-day {
-  cursor: pointer;
-}
-
-.fc-daygrid-day:hover {
-  background-color: #f0f8ff;
-}
-
-/* Year view month headers clickable */
-.fc-month-header {
-  cursor: pointer !important;
-  font-weight: bold;
-  background: #e6f0ff;
-  border-radius: 4px;
-  padding: 2px 6px;
-  transition: background 0.2s;
-}
-
-.fc-month-header:hover {
-  background: #ccffeb;
-}
-
-/* Make the left toolbar chunk a single row */
-.fc-header-toolbar .fc-left {
-  display: flex !important;
-  align-items: center;   /* vertical alignment */
-  gap: 8px;              /* spacing between title and arrows */
-}
-
-/* Remove extra margins from title */
-.fc-header-toolbar .fc-toolbar-title {
+.fc-daygrid-day-frame {
+  padding: 0 !important;
   margin: 0 !important;
-  font-size: 1.5rem !important; /* adjust size as you like */
-  font-weight: 600; 
 }
 
-/* Style arrows: plain white, no border/shadow */
-.fc-header-toolbar .fc-prev-button,
-.fc-header-toolbar .fc-next-button {
-  background-color: white !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: black;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* Optional hover effect */
-.fc-header-toolbar .fc-prev-button:hover,
-.fc-header-toolbar .fc-next-button:hover {
-  background-color: none;
-  color: black;
+.fc-multimonth-daygrid-table td{
+  
 }

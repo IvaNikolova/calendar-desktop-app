@@ -1,46 +1,3 @@
-/* Make the year view a 4x3 grid */
-.fc-multimonth {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr); /* 4 columns */
-  grid-template-rows: repeat(3, auto);   /* 3 rows */
-  gap: 20px; /* space between months */
-  padding: 20px;
-}
-
-/* Each month box */
-.fc-multimonth-month {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-/* Month title (e.g. January, February) */
-.fc-multimonth-month .fc-multimonth-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-/* Days of the week header */
-.fc-multimonth-month .fc-col-header-cell {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #666;
-  text-align: center;
-  padding: 2px 0;
-}
-
-/* Dates */
-.fc-multimonth-month td {
-  font-size: 0.75rem;
-  text-align: center;
-  padding: 2px;
-}
-
 /* Highlight today */
 .fc-day-today {
   background-color: #e6f7e6 !important;
@@ -53,3 +10,61 @@
   border-radius: 4px;
   padding: 2px 4px;
 }
+
+/* Shrink header toolbar (Day/Week/Month/Year buttons) */
+.fc-header-toolbar {
+  margin: 4px 0 !important;
+  padding: 0 8px;
+}
+
+/* Shrink year label */
+.fc-toolbar-title {
+  font-size: 1.1rem !important;
+  font-weight: 600;
+}
+
+/* Days clickable */
+.fc-daygrid-day {
+  cursor: pointer;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f0fdf4;
+}
+
+
+/* Make the left toolbar chunk a single row */
+.fc-header-toolbar .fc-left {
+  display: flex !important;
+  align-items: center;   /* vertical alignment */
+  gap: 8px;              /* spacing between title and arrows */
+}
+
+/* Remove extra margins from title */
+.fc-header-toolbar .fc-toolbar-title {
+  margin: 0 !important;
+  font-size: 1.5rem !important; /* adjust size as you like */
+  font-weight: 600; 
+}
+
+/* Style arrows: plain white, no border/shadow */
+.fc-header-toolbar .fc-prev-button,
+.fc-header-toolbar .fc-next-button {
+  background-color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: black;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Optional hover effect */
+.fc-header-toolbar .fc-prev-button:hover,
+.fc-header-toolbar .fc-next-button:hover {
+  background-color: none;
+  color: black;
+}
+
+
