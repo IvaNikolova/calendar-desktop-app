@@ -12,12 +12,14 @@ type CalendarViewProps = {
   view: string;
   onViewChange: (view: string) => void;
   resetView?: boolean;
+  onDateChange: (date: Date) => void;
 };
 
 export default function CalendarView({
   view,
   onViewChange,
   resetView,
+  onDateChange,
 }: CalendarViewProps) {
   const calendarRef = useRef<FullCalendar | null>(null);
 
@@ -190,6 +192,7 @@ export default function CalendarView({
             setClickedDate(info.date);
             api.changeView("timeGridDay", info.date);
             onViewChange("timeGridDay");
+            onDateChange(info.date);
           }
         }}
         viewDidMount={(arg) => {
@@ -199,6 +202,9 @@ export default function CalendarView({
           setTimeout(() => bindMonthTitleButtons(), 0);
         }}
         datesSet={(arg) => {
+          if (arg.view.type === "timeGridDay") {
+            onDateChange(arg.start);
+          }
           // when date range changes (e.g. next/prev year), re-bind
           if (arg.view.type === "multiMonthYear") {
             setTimeout(() => bindMonthTitleButtons(), 0);
