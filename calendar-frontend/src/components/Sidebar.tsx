@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./SmallCalendar.css";
@@ -16,8 +16,16 @@ function Sidebar({selectedDate,}: SidebarProps) {
   // 🔹 Local state for the small calendar
   const [miniDate, setMiniDate] = useState<Date | null>(new Date());
 
-  // todos stored as { "YYYY-MM-DD": [...] }
-  const [todosByDate, setTodosByDate] = useState<Record<string, Todo[]>>({});
+  // Load todos from localStorage when app starts
+  const [todosByDate, setTodosByDate] = useState<Record<string, Todo[]>>(() => {
+    const saved = localStorage.getItem("todosByDate");
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  // Save todos to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("todosByDate", JSON.stringify(todosByDate));
+  }, [todosByDate]);
   const [newTodo, setNewTodo] = useState("");
 
   // Format helper (local, not UTC)
