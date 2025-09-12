@@ -12,7 +12,7 @@ function Header({ currentView, onChangeView }: HeaderProps) {
   return (
     <header className="bg-white shadow p-2 flex flex-col">
       <h1 className="relative text-4xl mb-2 flex items-center justify-center gap-2 border-b-2 border-gray-300 pb-2 after:absolute after:left-0 after:right-0 after:bottom-0 after:h-1 after:shadow-md after:rounded-sm">
-        <img src="/src/images/logo.png" alt="Logo" className="h-10 w-10" />
+        <img src="/logo.png" alt="Logo" className="h-10 w-10" />
         Calendar
       </h1>
 
