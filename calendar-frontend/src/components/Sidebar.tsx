@@ -79,8 +79,9 @@ function Sidebar({selectedDate,}: SidebarProps) {
 
       {/* TODO LIST */}
       <div className="flex-1 bg-white border border-gray-300 shadow rounded p-4 flex flex-col">
-        <h2 className="font-bold mb-2">TODO LIST for {selectedDateKey}</h2>
-
+        <div className="flex items-center justify-center">
+          <h2 className="font-bold mb-2">TODO List</h2>
+        </div>
         <input
           type="text"
           value={newTodo}
@@ -101,12 +102,23 @@ function Sidebar({selectedDate,}: SidebarProps) {
                 <div className="flex items-start gap-2 flex-grow min-w-0">
                   <button
                     onClick={() => toggleDone(i)}
-                    className={`w-4 h-4 mt-1 border rounded flex-shrink-0 flex items-center justify-center ${
-                      todo.done ? "bg-green-500 text-white border-green-500" : "bg-white border-gray-400"
+                    className={`w-5 h-5 mt-1 border rounded-full flex-shrink-0 flex items-center justify-center bg-white ${
+                      todo.done ? "border-white" : "border-gray-400"
                     }`}
                   >
-                    {todo.done ? "✔" : ""}
+                    {todo.done && (
+                      <svg
+                        className="w-5 h-5 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
                   </button>
+
                   <span
                     className={`break-words whitespace-normal flex-grow min-w-0 ${
                       todo.done ? "line-through text-gray-500" : ""
@@ -117,7 +129,7 @@ function Sidebar({selectedDate,}: SidebarProps) {
                 </div>
                 <button
                   onClick={() => removeTodo(i)}
-                  className="text-red-500 text-xs ml-2 flex-shrink-0 w-5 text-center"
+                  className="text-red-500 text-xs mt-1 flex-shrink-0 w-5 text-center items-center justify-center"
                 >
                   ✕
                 </button>
